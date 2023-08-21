@@ -53,18 +53,44 @@
         "post-update-cmd": [
             "@auto-scripts"
         ],
-        "e2e:server:start": [
+        "docker:compose:up": "docker-compose up -d",
+        "docker:compose:stop": "docker-compose stop",
+        "symfony:proxy:start": "symfony proxy:start",
+        "symfony:proxy:stop": "symfony proxy:stop",
+        "symfony:server:dev:start": [
+            "symfony server:stop --dir=public",
+            "symfony server:start --dir=public --port=8000 --daemon",
+            "symfony server:status --dir=public"
+        ],
+        "symfony:server:dev:stop": "symfony server:stop --dir=public",
+        "symfony:server:e2e:start": [
             "APP_ENV=e2e symfony server:stop --dir=public",
             "APP_ENV=e2e symfony server:start --port=8005 --dir=public --daemon",
             "APP_ENV=e2e symfony server:status --dir=public"
         ],
-        "e2e:server:stop": [
+        "symfony:server:e2e:stop": [
             "APP_ENV=e2e symfony server:stop --dir=public"
         ],
-        "e2e:run": [
-            "@e2e:server:start",
-            "APP_ENV=e2e CYPRESS_shopwareRoot=$(pwd) npx cypress run",
-            "@e2e:server:stop"
+        "dev:start": [
+            "@docker:compose:up",
+            "@symfony:proxy:start",
+            "@symfony:server:dev:start",
+            "@symfony:server:e2e:start"
+        ],
+        "dev:stop": [
+            "@symfony:server:e2e:stop",
+            "@symfony:server:dev:stop",
+            "@symfony:proxy:stop",
+            "@docker:compose:stop"
+        ],
+        "tests:e2e:prepare": [
+            "APP_URL=https://127.0.0.1:8005 APP_ENV=e2e bin/console system:install --basic-setup --create-database --drop-database --force -n",
+            "APP_ENV=e2e bin/console system:config:set core.frw.completedAt '1970-01-01T00:00:00+00:00'",
+            "APP_ENV=e2e bin/console e2e:dump-db"
+        ],
+        "tests:e2e:cypress:run": "APP_ENV=e2e CYPRESS_shopwareRoot=$(pwd) npx cypress run",
+        "tests:e2e": [
+            "@tests:e2e:cypress:run"
         ]
     },
     "extra": {
