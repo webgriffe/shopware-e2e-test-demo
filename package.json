@@ -1,0 +1,15 @@
+{
+  "name": "shopware-demo",
+  "version": "1.0.0",
+  "description": "This repository contains the production template that enables you to build, package and deploy Shopware 6 to production shops.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@shopware-ag/e2e-testsuite-platform": "^7.0.5",
+    "cypress": "^12.17.4"
+  }
+}
