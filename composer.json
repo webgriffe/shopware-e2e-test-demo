@@ -85,7 +85,7 @@
         ],
         "tests:e2e:prepare": [
             "APP_URL=https://127.0.0.1:8005 APP_ENV=e2e bin/console system:install --basic-setup --create-database --drop-database --force -n",
-            "APP_ENV=e2e bin/console system:config:set core.frw.completedAt '1970-01-01T00:00:00+00:00'",
+            "APP_ENV=e2e bin/console system:config:set core.frw.completedAt '2019-10-07T10:46:23+00:00'",
             "APP_ENV=e2e bin/console e2e:dump-db"
         ],
         "tests:e2e:cypress:run": "APP_ENV=e2e CYPRESS_shopwareRoot=$(pwd) npx cypress run",
