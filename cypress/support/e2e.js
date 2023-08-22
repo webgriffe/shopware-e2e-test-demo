@@ -22,7 +22,13 @@ import './commands'
 // require('./commands')
 
 beforeEach(() => {
-    cy.log('I run before every test in every spec file!!!!!!')
-    cy.cleanUpPreviousState()
-    cy.createDefaultFixture('tax')
+    if (!Cypress.env('SKIP_AUTH')) {
+        return cy.authenticate().then(() => {
+            if (!Cypress.env('SKIP_INIT')) {
+                return cy.setToInitialState().then(() => {
+                    return cy.authenticate();
+                });
+            }
+        });
+    }
 })

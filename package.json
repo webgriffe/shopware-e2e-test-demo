@@ -9,7 +9,14 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@babel/register": "^7.22.5",
+    "@cypress/grep": "^3.1.5",
     "@shopware-ag/e2e-testsuite-platform": "^7.0.5",
-    "cypress": "^12.17.4"
+    "axios": "^1.4.0",
+    "cypress": "^12.17.4",
+    "cypress-multi-reporters": "^1.6.3",
+    "mocha": "^10.2.0",
+    "mocha-junit-reporter": "^2.2.1",
+    "mochawesome": "^7.1.3"
   }
 }
