@@ -11,7 +11,19 @@ This repository contains a Shopware 6 demo project with end-to-end tests.
 * [Docker](https://www.docker.com/)
 * [Docker Compose](https://docs.docker.com/compose/)
 
-## Installation and usage instructions
+## Installation
+
+Install PHP dependencies:
+
+```bash
+composer install
+```
+
+Install Node.js dependencies:
+
+```bash
+npm install
+```
 
 Create a `docker-compose.override.yml` file like the following and adapt it to fit your system:
 
@@ -41,43 +53,6 @@ services:
 
 ```
 
-Create an `.env.local` file like the following and adapt it to fit your system:
-
-```
-MAILER_DSN=smpt://127.0.0.1:1025
-APP_ENV=dev
-APP_URL=http://127.0.0.1:8000
-APP_SECRET=6c297d03ca55119e98762b55ae2dd3c0
-INSTANCE_ID=448ea58bd36b579714c2ed44fa2fe8f2
-BLUE_GREEN_DEPLOYMENT=0
-DATABASE_URL=mysql://shopware:!ChangeMe!@127.0.0.1/shopware
-OPENSEARCH_URL=http://127.0.0.1:9200
-SHOPWARE_ES_ENABLED=1
-SHOPWARE_ES_INDEXING_ENABLED=1
-
-```
-
-Create an `.env.e2e.local` file like the following and adapt it to fit your system:
-
-```
-DATABASE_URL=mysql://root:!ChangeMe!@127.0.0.1:3306/shopware_e2e
-
-```
-
-The `DATABASE_URL` env var in this file should point to a different database to use with end-to-end tests.
-
-Install PHP dependencies:
-
-```bash
-composer install
-```
-
-Install Node.js dependencies:
-
-```bash
-npm install
-```
-
 Start development services with:
 
 ```bash
@@ -90,3 +65,61 @@ This command will:
 2. Start Symfony CLI proxy
 3. Start a Symfony CLI server for development on port `8000`
 4. Start a Symfony CLI server for end-to-end tests on port `8005`
+
+Create an `.env.local` file like the following and adapt it to fit your system:
+
+```
+MAILER_DSN=smpt://127.0.0.1:1025
+APP_ENV=dev
+APP_URL=http://127.0.0.1:8000
+APP_SECRET=ChangeMe
+BLUE_GREEN_DEPLOYMENT=0
+DATABASE_URL=mysql://shopware:!ChangeMe!@127.0.0.1/shopware
+OPENSEARCH_URL=http://127.0.0.1:9200
+SHOPWARE_ES_ENABLED=1
+SHOPWARE_ES_INDEXING_ENABLED=1
+
+```
+
+Install Shopware on development database with:  
+
+```bash
+bin/console system:install --basic-setup
+```
+
+If you enabled Elasticsearch, you need to run the following command to create the index:
+
+```bash
+bin/console es:index
+```
+
+## Prepare for end-to-end tests
+
+Create an `.env.e2e.local` file like the following and adapt it to fit your system:
+
+```
+DATABASE_URL=mysql://root:!ChangeMe!@127.0.0.1:3306/shopware_e2e
+
+```
+
+The `DATABASE_URL` env var in this file should point to a different database to use with end-to-end tests.
+
+Then prepare end-to-end tests database and dump with:
+
+```bash
+composer test:e2e:prepare
+```
+
+This command will:
+
+1. Install Shopware on end-to-end tests database
+2. Disable first run wizard on that database
+3. Dump the end-to-end database to `var/dumps`. This dump will be imported before each end-to-end test run to isolate tests.
+
+## Run end-to-end tests
+
+When you have end-to-end database prepared you can run end-to-end tests with:
+
+```bash
+composer test:e2e
+```
