@@ -58,19 +58,17 @@
         "symfony:proxy:start": "symfony proxy:start",
         "symfony:proxy:stop": "symfony proxy:stop",
         "symfony:server:dev:start": [
-            "symfony server:stop --dir=public",
-            "symfony server:start --dir=public --port=8000 --daemon",
-            "symfony server:status --dir=public"
+            "@symfony:server:dev:stop",
+            "symfony server:start --port=8000 --daemon",
+            "symfony server:status"
         ],
-        "symfony:server:dev:stop": "symfony server:stop --dir=public",
+        "symfony:server:dev:stop": "symfony server:stop",
         "symfony:server:test:start": [
-            "APP_ENV=e2e symfony server:stop --dir=public",
+            "@symfony:server:test:stop",
             "APP_ENV=e2e symfony server:start --port=8005 --dir=public --daemon",
             "APP_ENV=e2e symfony server:status --dir=public"
         ],
-        "symfony:server:test:stop": [
-            "APP_ENV=e2e symfony server:stop --dir=public"
-        ],
+        "symfony:server:test:stop": "symfony server:stop --dir=public",
         "dev:start": [
             "@docker:compose:up",
             "@symfony:proxy:start",
