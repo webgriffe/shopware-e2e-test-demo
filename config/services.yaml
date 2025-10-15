@@ -18,3 +18,10 @@ services:
         # https://symfony.com/doc/current/service_container.html#binding-arguments-by-name-or-type
         #bind:
         #    'bool $isDebug': '%kernel.debug%'
+
+    App\:
+        resource: '../src/'
+        exclude:
+            - '../src/DependencyInjection/'
+            - '../src/Entity/'
+            - '../src/Kernel.php'

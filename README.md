@@ -4,12 +4,11 @@ This repository contains a Shopware 6 demo project with end-to-end tests.
 
 ## Requirements
 
-* [PHP](https://www.php.net/) 8.2 with [extensions required by Shopware](https://docs.shopware.com/en/shopware-6-en/first-steps/system-requirements#environment)
+* [PHP](https://www.php.net/) 8.4 with [extensions required by Shopware](https://docs.shopware.com/en/shopware-6-en/first-steps/system-requirements#environment)
 * [Composer](https://getcomposer.org/)
-* [Node.js](https://nodejs.org/it) 18.x with [npm](https://www.npmjs.com/)
+* [Node.js](https://nodejs.org/it) 22.x with [npm](https://www.npmjs.com/)
 * [Symfony CLI](https://symfony.com/download)
 * [Docker](https://www.docker.com/)
-* [Docker Compose](https://docs.docker.com/compose/)
 
 ## Installation
 
@@ -28,29 +27,29 @@ npm install
 Create a `docker-compose.override.yml` file like the following and adapt it to fit your system:
 
 ```yaml
-version: '3'
-
 services:
-###> symfony/mailer ###
-  mailer:
-    image: schickling/mailcatcher
-    ports: ["1025:1025", "1080:1080"]
-###< symfony/mailer ###
+    ###> shopware/core ###
+    database:
+        ports:
+            - "3306:3306"
+    ###< shopware/core ###
 
-###> shopware/core ###
-  database:
-    ports:
-      - "3306:3306"
-    labels:
-      com.symfony.server.service-ignore: true
-###< shopware/core ###
+    ###> symfony/mailer ###
+    mailer:
+        image: axllent/mailpit
+        ports:
+            - "1025:1025"
+            - "8025:1025"
+        environment:
+            MP_SMTP_AUTH_ACCEPT_ANY: 1
+            MP_SMTP_AUTH_ALLOW_INSECURE: 1
+    ###< symfony/mailer ###
 
-###> shopware/elasticsearch ###
-  opensearch:
-    ports:
-      - "9200:9200"
-###< shopware/elasticsearch ###
-
+    ###> shopware/elasticsearch ###
+    opensearch:
+        ports:
+            - "9200:9200"
+    ###< shopware/elasticsearch ###
 ```
 
 Start development services with:
@@ -72,25 +71,17 @@ Create an `.env.local` file like the following and adapt it to fit your system:
 MAILER_DSN=smpt://127.0.0.1:1025
 APP_ENV=dev
 APP_URL=http://127.0.0.1:8000
-APP_SECRET=ChangeMe
 BLUE_GREEN_DEPLOYMENT=0
-DATABASE_URL=mysql://shopware:!ChangeMe!@127.0.0.1/shopware
+DATABASE_URL=mysql://root:root@127.0.0.1/shopware
 OPENSEARCH_URL=http://127.0.0.1:9200
 SHOPWARE_ES_ENABLED=1
 SHOPWARE_ES_INDEXING_ENABLED=1
-
 ```
 
 Install Shopware on development database with:  
 
 ```bash
 bin/console system:install --basic-setup
-```
-
-If you enabled Elasticsearch, you need to run the following command to create the index:
-
-```bash
-bin/console es:index
 ```
 
 ## Prepare for end-to-end tests
