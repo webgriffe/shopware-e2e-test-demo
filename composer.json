@@ -56,46 +56,45 @@
     ],
     "post-update-cmd": [
       "@auto-scripts"
-        ],
-        "docker:compose:up": "docker compose up -d",
-        "docker:compose:stop": "docker compose stop",
-        "symfony:proxy:start": "symfony proxy:start",
-        "symfony:proxy:stop": "symfony proxy:stop",
-        "symfony:server:dev:start": [
-            "@symfony:server:dev:stop",
-            "symfony server:start --port=8000 --daemon",
-            "symfony server:status"
-        ],
-        "symfony:server:dev:stop": "symfony server:stop",
-        "symfony:server:test:start": [
-            "@symfony:server:test:stop",
-            "APP_ENV=e2e symfony server:start --port=8005 --dir=public --daemon",
-            "APP_ENV=e2e symfony server:status --dir=public"
-        ],
-        "symfony:server:test:stop": "symfony server:stop --dir=public",
-        "dev:start": [
-            "@docker:compose:up",
-            "@symfony:proxy:start",
-            "@symfony:server:dev:start",
-            "@symfony:server:test:start"
-        ],
-        "dev:stop": [
-            "@symfony:server:test:stop",
-            "@symfony:server:dev:stop",
-            "@symfony:proxy:stop",
-            "@docker:compose:stop"
-        ],
-        "test:e2e:prepare": [
-            "APP_URL=https://127.0.0.1:8005 APP_ENV=e2e bin/console system:install --basic-setup --create-database --drop-database --force -n",
-            "APP_ENV=e2e bin/console system:config:set core.frw.completedAt '2019-10-07T10:46:23+00:00'",
-            "APP_ENV=e2e bin/console e2e:dump-db"
-        ],
-        "test:e2e:cypress:run": "APP_ENV=e2e CYPRESS_shopwareRoot=$(pwd) CYPRESS_localUsage=1 npx cypress run",
-        "test:e2e": [
-            "@test:e2e:cypress:run"
-        ],
-        "test": [
-            "@test:e2e"
+    ],
+    "docker:compose:up": "docker compose up -d",
+    "docker:compose:stop": "docker compose stop",
+    "symfony:proxy:start": "symfony proxy:start",
+    "symfony:proxy:stop": "symfony proxy:stop",
+    "symfony:server:dev:start": [
+      "@symfony:server:dev:stop",
+      "symfony server:start --port=8000 --daemon",
+      "symfony server:status"
+    ],
+    "symfony:server:dev:stop": "symfony server:stop",
+    "symfony:server:test:start": [
+      "@symfony:server:test:stop",
+      "APP_ENV=e2e symfony server:start --port=8005 --dir=public --daemon",
+      "APP_ENV=e2e symfony server:status --dir=public"
+    ],
+    "symfony:server:test:stop": "symfony server:stop --dir=public",
+    "dev:start": [
+      "@docker:compose:up",
+      "@symfony:proxy:start",
+      "@symfony:server:dev:start",
+      "@symfony:server:test:start"
+    ],
+    "dev:stop": [
+      "@symfony:server:test:stop",
+      "@symfony:server:dev:stop",
+      "@symfony:proxy:stop",
+      "@docker:compose:stop"
+    ],
+    "test:e2e:prepare": [
+      "APP_URL=https://127.0.0.1:8005 APP_ENV=e2e bin/console system:install --basic-setup --create-database --drop-database --force -n",
+      "APP_ENV=e2e bin/console system:config:set core.frw.completedAt '2019-10-07T10:46:23+00:00'"
+    ],
+    "test:e2e:playwright:test": "(cd tests/acceptance && npx playwright test)",
+    "test:e2e": [
+      "@test:e2e:playwright:test"
+    ],
+    "test": [
+      "@test:e2e"
     ]
   },
   "extra": {

@@ -32,6 +32,9 @@ services:
     database:
         ports:
             - "3306:3306"
+    labels:
+        # The following is important to avoid Symfony CLI injecting wrong DATABASE_URL for e2e env.
+        com.symfony.server.service-ignore: true
     ###< shopware/core ###
 
     ###> symfony/mailer ###
@@ -89,7 +92,7 @@ bin/console system:install --basic-setup
 Create an `.env.e2e.local` file like the following and adapt it to fit your system:
 
 ```
-DATABASE_URL=mysql://root:!ChangeMe!@127.0.0.1:3306/shopware_e2e
+DATABASE_URL=mysql://root:root@127.0.0.1:3306/shopware_e2e
 
 ```
 
@@ -105,7 +108,6 @@ This command will:
 
 1. Install Shopware on end-to-end tests database
 2. Disable first run wizard on that database
-3. Dump the end-to-end database to `var/dumps`. This dump will be imported before each end-to-end test run to isolate tests.
 
 ## Run end-to-end tests
 

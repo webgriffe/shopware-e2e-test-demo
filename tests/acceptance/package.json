@@ -1,0 +1,19 @@
+{
+  "name": "acceptance",
+  "type": "module",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {},
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "@playwright/test": "^1.56.1",
+    "@types/node": "^24.8.1"
+  },
+  "dependencies": {
+    "@shopware-ag/acceptance-test-suite": "^11.35.0",
+    "dotenv": "^17.2.3"
+  }
+}
