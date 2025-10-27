@@ -18,13 +18,13 @@ Install PHP dependencies:
 composer install
 ```
 
-Install Node.js dependencies:
+Install end2end test suite Node.js dependencies:
 
 ```bash
-npm install
+(cd tests/acceptance && npm install)
 ```
 
-Create a `docker-compose.override.yml` file like the following and adapt it to fit your system:
+Create a `compose.override.yml` file like the following and adapt it to fit your system:
 
 ```yaml
 services:
